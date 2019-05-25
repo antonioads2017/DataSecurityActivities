@@ -1,5 +1,9 @@
+#CIFRA DE CESAR EM PYTHON
+
+#variavel que contem o alfabeto
 alfabeto = 'abcdefghijklmnopqrstuvwxyz'
 
+#função de que cifrar ou decifrar o texto
 def crypter(dir):
     texto = input("Digite o texto a ser cifrado:").lower()
     print(texto)
@@ -30,6 +34,8 @@ def main():
         else:
             print("Opção invalida")
 
+print("------CIFRA DE CESAR------")
+print("--------------------------")
 main()
 
 
