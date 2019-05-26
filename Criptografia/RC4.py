@@ -1,5 +1,4 @@
-import numpy is np
-
+import numpy as np
 def KSA(key):
     tam_key = len(key)
     S = list(range(256))
@@ -29,10 +28,19 @@ key = input("Digite a chave:")
 message = input("Digite a mensagem")
 key = preparing_key_array(key)
 
+
 S = KSA(key)
 
 keystream = np.array(PRGA(S, len(message)))
-print(keystream)
+
+print("keystream: ", keystream)
+
+message = np.array([ord(c) for c in message])
+
+cipher = keystream ^ message #XOR
+
+print(cipher.astype(np.uint8).data.hex())
+
 
 
 
