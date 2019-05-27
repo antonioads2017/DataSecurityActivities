@@ -36,50 +36,41 @@ def array_for_string(array): #função para converter o array de string para str
         text+=array[c]
     return text
 
-def encrypt(message,keystream): #função de cifragem
+def encrypt(message,key): #função de cifragem
         message = np.array([ord(c) for c in message]) #mensagem é convertida em np.array 
+        keystream = createKeystream(key,message)
         encryption = keystream ^ message #XOR entre a keystream e a mensagem
         print("\ncifragem: ",encryption)
         return encryption
         
 
 def createKeystream(key, message): #função para criar a keystream em array
+    key = preparing_key_array(key)
     S = KSA(key) 
     keystream = np.array(PRGA(S, len(message))) #keystream é convertida em np.array
     print("\nkeystream: ",keystream)
     return keystream
 
-def decrypt(encryption, keystream): #função para decifragem
-    decrypterUni =  keystream ^ encryption #XOR entre a cifra e a keystream
-    decrypter = [chr(c) for c in decrypterUni]
-    # return decrypter.replace("'","").replace(", ","")
-    return array_for_string(decrypter)
+def decrypt(encryption, key, message):
+        message = np.array([ord(c) for c in message])
+        keystream = createKeystream(key,message)
+        decrypter =  keystream ^ encryption
+        print("\ndecifragem: ",decrypter)
+        return decrypter 
 
 
-def main ():
-    print("----------------------------")
-    print("Cifragem e decifragem em RC4")
-    print("----------------------------")
-    while True:
+print("----------------------------")
+print("-----Criptografia em RC4----")
+print("----------------------------")
+while True:
         key = input("Digite a chave: ")
         message = input("Digite a mensagem: ")
-        keyArray = preparing_key_array(key)
-        keystream = createKeystream(keyArray,message)
-        encryption = encrypt(message,keystream)
+        encryption = encrypt(message,key)
         encryptionHex=(encryption.astype(np.uint8).data.hex()) #cifra em hexadecimal
         print("\nhexa da cifragem: ",encryptionHex)
-        decifrar=""
-        while decifrar!=key:
-                decifrar = input("\nDigite a chave para decifrar: ")
-                if decifrar==key:
-                        print("\ndecriptada:", decrypt(encryption,keystream))
-                else:
-                        print("\nChave invalida, tente de novo!")
+        decifrar = input("\nDigite a chave para decifrar: ")
+        decrypter = decrypt(encryption,decifrar,message)
+        print("\nhexa da decifragem: ", decrypter.astype(np.uint8).data.hex())
+        decrypter=[chr(c) for c in decrypter]
+        print("\ndecriptada:", array_for_string(decrypter))
         print("\n--------------------------\nBora de novo!\n")
-main()
-
-
-
-
-
-
