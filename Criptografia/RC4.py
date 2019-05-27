@@ -38,9 +38,9 @@ def array_for_string(array): #função para converter o array de string para str
 
 def encrypt(message,keystream): #função de cifragem
         message = np.array([ord(c) for c in message]) #mensagem é convertida em np.array 
-        cipher = keystream ^ message #XOR entre a keystream e a mensagem
-        print("\ncifragem: ",cipher)
-        return cipher
+        encryption = keystream ^ message #XOR entre a keystream e a mensagem
+        print("\ncifragem: ",encryption)
+        return encryption
         
 
 def createKeystream(key, message): #função para criar a keystream em array
@@ -49,8 +49,8 @@ def createKeystream(key, message): #função para criar a keystream em array
     print("\nkeystream: ",keystream)
     return keystream
 
-def decrypt(cipher, keystream): #função para decifragem
-    decrypterUni =  keystream ^ cipher #XOR entre a cifra e a keystream
+def decrypt(encryption, keystream): #função para decifragem
+    decrypterUni =  keystream ^ encryption #XOR entre a cifra e a keystream
     decrypter = [chr(c) for c in decrypterUni]
     # return decrypter.replace("'","").replace(", ","")
     return array_for_string(decrypter)
@@ -65,14 +65,14 @@ def main ():
         message = input("Digite a mensagem: ")
         keyArray = preparing_key_array(key)
         keystream = createKeystream(keyArray,message)
-        cipher = encrypt(message,keystream)
-        cipherHex=(cipher.astype(np.uint8).data.hex()) #cifra em hexadecimal
-        print("\nhexa da cifragem: ",cipherHex)
+        encryption = encrypt(message,keystream)
+        encryptionHex=(encryption.astype(np.uint8).data.hex()) #cifra em hexadecimal
+        print("\nhexa da cifragem: ",encryptionHex)
         decifrar=""
         while decifrar!=key:
                 decifrar = input("\nDigite a chave para decifrar: ")
                 if decifrar==key:
-                        print("\ndecriptada:", decrypt(cipher,keystream))
+                        print("\ndecriptada:", decrypt(encryption,keystream))
                 else:
                         print("\nChave invalida, tente de novo!")
         print("\n--------------------------\nBora de novo!\n")
